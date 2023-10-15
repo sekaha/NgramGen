@@ -7,6 +7,7 @@ def get_grams(
     corpus,
     valid_chars=set("abcdefghijklmnopqrstuvwxyz[];',./`1234567890-=\\ "),
     remove_chars="",
+    ordered=False,
 ):
     """
     Generate n-grams from a text corpus and save the results in TSV files.
@@ -18,17 +19,17 @@ def get_grams(
     """
 
     DATA_TYPES = {
-        "characters": (1, 0),
+        # "characters": (1, 0),
         "bigrams": (2, 0),
-        "trigrams": (3, 0),
-        "quadrigram": (4, 0),
+        # "trigrams": (3, 0),
+        # "quadrigram": (4, 0),
         "1-skip": (2, 1),
-        "2-skip": (2, 2),
-        "3-skip": (2, 3),
-        "4-skip": (2, 4),
-        "5-skip": (2, 5),
-        "6-skip": (2, 6),
-        "7-skip": (2, 7),
+        # "2-skip": (2, 2),
+        # "3-skip": (2, 3),
+        # "4-skip": (2, 4),
+        # "5-skip": (2, 5),
+        # "6-skip": (2, 6),
+        # "7-skip": (2, 7),
     }
 
     unshift = str.maketrans(
@@ -44,6 +45,9 @@ def get_grams(
 
             # make an n-gram that skips letters between
             gram = window[: floor(size / 2)] + window[-ceil(size / 2) :]
+
+            if ordered:
+                gram = sorted(gram)
 
             # only accept substrings with valid characters
             if all(char in valid_chars for char in gram):
