@@ -1,4 +1,4 @@
-from gram_gen import get_grams
+from ngram_gen import get_grams
 
 if __name__ == "__main__":
-    get_grams("res/test.txt")
+    get_grams("res/shai.txt")
