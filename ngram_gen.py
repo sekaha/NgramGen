@@ -1,11 +1,10 @@
 import concurrent.futures
-from math import floor, ceil
 from collections import Counter
 
 
 def get_grams(
     corpus,
-    valid_chars=set("abcdefghijklmnopqrstuvwxyz[];',./`1234567890-=\\ "),
+    valid_chars=None,
     remove_chars="",
     ordered=False,
 ):
@@ -17,6 +16,9 @@ def get_grams(
         valid_chars (set, optional): A set of valid characters to consider for n-grams (default is alphanumeric and some special characters).
         remove_chars (str, optional): Characters to remove from the text before processing (default is empty).
     """
+    if not valid_chars:
+        valid_chars = "abcdefghijklmnopqrstuvwxyz[];',./`1234567890-=\\"
+    valid_chars = set(valid_chars)
 
     DATA_TYPES = {
         # "characters": (1, 0),
@@ -44,10 +46,10 @@ def get_grams(
             window = text[i : i + size + skip]
 
             # make an n-gram that skips letters between
-            gram = window[: floor(size / 2)] + window[-ceil(size / 2) :]
+            gram = window[: int(size / 2)] + window[-int(size / 2 + 0.5) :]
 
             if ordered:
-                gram = sorted(gram)
+                gram = "".join(sorted(gram))
 
             # only accept substrings with valid characters
             if all(char in valid_chars for char in gram):
